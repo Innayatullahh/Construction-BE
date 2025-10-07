@@ -1,7 +1,53 @@
 import { Task, ChecklistItem, TaskStatus, ChecklistStatus } from '../types';
+import fs from 'fs';
+import path from 'path';
 
-// In-memory storage for demo purposes
-const tasks: Map<string, Task> = new Map();
+// File-based persistent storage
+const DATA_FILE = path.join(__dirname, '../../data/tasks.json');
+
+// Ensure data directory exists
+const dataDir = path.dirname(DATA_FILE);
+if (!fs.existsSync(dataDir)) {
+  fs.mkdirSync(dataDir, { recursive: true });
+}
+
+// Load tasks from file or initialize empty Map
+let tasks: Map<string, Task> = new Map();
+
+// Load data from file
+function loadTasks(): void {
+  try {
+    if (fs.existsSync(DATA_FILE)) {
+      const data = fs.readFileSync(DATA_FILE, 'utf8');
+      const tasksArray = JSON.parse(data);
+      tasks = new Map(tasksArray.map((task: any) => [task.id, {
+        ...task,
+        createdAt: new Date(task.createdAt),
+        updatedAt: new Date(task.updatedAt),
+        checklist: task.checklist.map((item: any) => ({
+          ...item,
+          createdAt: new Date(item.createdAt)
+        }))
+      }]));
+    }
+  } catch (error) {
+    console.error('Error loading tasks:', error);
+    tasks = new Map();
+  }
+}
+
+// Save tasks to file
+function saveTasks(): void {
+  try {
+    const tasksArray = Array.from(tasks.values());
+    fs.writeFileSync(DATA_FILE, JSON.stringify(tasksArray, null, 2));
+  } catch (error) {
+    console.error('Error saving tasks:', error);
+  }
+}
+
+// Load tasks on startup
+loadTasks();
 
 export class TaskDataLayer {
   async createTask(userId: string, title: string, description?: string, position?: { x: number; y: number }): Promise<Task> {
@@ -19,6 +65,7 @@ export class TaskDataLayer {
     };
     
     tasks.set(id, task);
+    saveTasks();
     return task;
   }
 
@@ -41,11 +88,16 @@ export class TaskDataLayer {
     };
     
     tasks.set(id, updatedTask);
+    saveTasks();
     return updatedTask;
   }
 
   async deleteTask(id: string): Promise<boolean> {
-    return tasks.delete(id);
+    const deleted = tasks.delete(id);
+    if (deleted) {
+      saveTasks();
+    }
+    return deleted;
   }
 
   async addChecklistItem(taskId: string, text: string): Promise<ChecklistItem | null> {
@@ -62,6 +114,7 @@ export class TaskDataLayer {
     task.checklist.push(checklistItem);
     task.updatedAt = new Date();
     tasks.set(taskId, task);
+    saveTasks();
     
     return checklistItem;
   }
@@ -79,6 +132,7 @@ export class TaskDataLayer {
     };
     task.updatedAt = new Date();
     tasks.set(taskId, task);
+    saveTasks();
     
     return task.checklist[itemIndex];
   }
@@ -93,6 +147,7 @@ export class TaskDataLayer {
     task.checklist.splice(itemIndex, 1);
     task.updatedAt = new Date();
     tasks.set(taskId, task);
+    saveTasks();
     
     return true;
   }
