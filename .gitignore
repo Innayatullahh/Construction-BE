@@ -89,7 +89,6 @@ tmp/
 temp/
 
 # Editor directories and files
-.vscode/
 .idea/
 *.swp
 *.swo
@@ -115,3 +114,7 @@ coverage/
 
 # PM2 logs
 .pm2/
+branch_structure.json
+temp_auto_push.bat
+temp_interactive_push.bat
+.gitignore

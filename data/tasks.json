@@ -12,5 +12,45 @@
     "checklist": [],
     "createdAt": "2025-10-07T18:52:03.060Z",
     "updatedAt": "2025-10-07T18:52:07.811Z"
+  },
+  {
+    "id": "task_1759909633599_2ss2y1ogp",
+    "userId": "test-user",
+    "title": "Test Task",
+    "description": "Test Description",
+    "status": "not-started",
+    "checklist": [],
+    "createdAt": "2025-10-08T07:47:13.599Z",
+    "updatedAt": "2025-10-08T07:47:13.599Z"
+  },
+  {
+    "id": "task_1759909852019_awha8dxb5",
+    "userId": "test-user-2",
+    "title": "Test Task After Revert",
+    "description": "Testing if task creation works",
+    "status": "not-started",
+    "checklist": [],
+    "createdAt": "2025-10-08T07:50:52.019Z",
+    "updatedAt": "2025-10-08T07:50:52.019Z"
+  },
+  {
+    "id": "task_1759913002565_4ev72jhxa",
+    "userId": "test-user-final-check",
+    "title": "Test Final Check Status",
+    "description": "Testing final-check-awaiting status",
+    "status": "final-check-awaiting",
+    "checklist": [],
+    "createdAt": "2025-10-08T08:43:22.567Z",
+    "updatedAt": "2025-10-08T08:43:26.733Z"
+  },
+  {
+    "id": "task_1759913108945_79g9nbbz0",
+    "userId": "debug-user",
+    "title": "Debug Task Creation",
+    "description": "Testing if task creation works",
+    "status": "not-started",
+    "checklist": [],
+    "createdAt": "2025-10-08T08:45:08.945Z",
+    "updatedAt": "2025-10-08T08:45:08.945Z"
   }
 ]

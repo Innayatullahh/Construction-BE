@@ -4,9 +4,9 @@
   "description": "Backend for construction management system",
   "main": "dist/index.js",
   "scripts": {
-    "dev": "tsx watch src/index.ts",
-    "build": "tsc",
-    "start": "node dist/index.js",
+    "dev": "node init && tsx watch src/index.ts",
+    "build": "node init && tsc",
+    "start": "node init && node dist/index.js",
     "env:setup": "cp env.example .env"
   },
   "dependencies": {
